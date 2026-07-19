@@ -152,8 +152,7 @@ export function MosShell({ children }: { children: ReactNode }) {
           <div className="fixed inset-0 top-14 z-10 bg-background/60 backdrop-blur-sm md:hidden" onClick={() => setOpen(false)} />
         )}
 
-        {/* mos-page-enter gives a subtle slide-in on every route change */}
-        <main key={path} className="min-h-[calc(100vh-3.5rem)] flex-1 mos-page-enter">{children}</main>
+        <main className="min-h-[calc(100vh-3.5rem)] flex-1">{children}</main>
       </div>
     </div>
   );

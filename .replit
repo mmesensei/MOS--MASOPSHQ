@@ -1,0 +1,64 @@
+modules = ["web", "nodejs-22"]
+
+[nix]
+channel = "stable-25_05"
+
+[agent]
+expertMode = true
+
+[userenv]
+
+[userenv.shared]
+SUPABASE_PROJECT_ID = "vitjdkseidpujgvxqzhm"
+SUPABASE_PUBLISHABLE_KEY = "sb_publishable_fzjCmGrmPxeOdg7FVpIUaA_1wz1aH16"
+SUPABASE_URL = "https://vitjdkseidpujgvxqzhm.supabase.co"
+VITE_SUPABASE_PROJECT_ID = "vitjdkseidpujgvxqzhm"
+VITE_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_fzjCmGrmPxeOdg7FVpIUaA_1wz1aH16"
+VITE_SUPABASE_URL = "https://vitjdkseidpujgvxqzhm.supabase.co"
+
+[userenv.production]
+GOOGLE_OAUTH_CALLBACK_URL = "https://Mosv1.replit.app/api/public/google/oauth/callback"
+
+[userenv.development]
+GOOGLE_OAUTH_CALLBACK_URL = "https://9dc47591-f9c6-4b10-9d50-dc1f19ba8389-00-15sj412y0177w-fl6wj3v2.picard.replit.dev/api/public/google/oauth/callback"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
+waitForPort = 5000
+
+[deployment]
+deploymentTarget = "autoscale"
+build = ["npm", "run", "build"]
+run = ["node", ".output/server/index.mjs"]
+
+[[ports]]
+localPort = 5000
+externalPort = 5000
+
+[[ports]]
+localPort = 8080
+externalPort = 80
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 120000

@@ -1,0 +1,138 @@
+Focus on the Canon Alignment Audit first.
+
+That gives Replit the clearest foundation before it builds more screens. Otherwise, it may reproduce existing inconsistencies inside the new /hq experience.
+
+Send this:
+
+
+---
+
+Founder Directive — Canon Alignment Audit
+
+Begin with a full canon alignment audit of the existing MOS interface.
+
+Do not build new major features yet.
+
+Compare every existing screen against the uploaded reference images and identify drift in:
+
+typography
+
+spacing
+
+layout proportions
+
+color usage
+
+borders
+
+shadows
+
+iconography
+
+card patterns
+
+navigation
+
+executive presentation
+
+responsive behavior
+
+visual hierarchy
+
+
+Priority
+
+Establish one reusable visual system before redesigning individual screens.
+
+Audit and standardize:
+
+page headers
+
+navigation
+
+panels
+
+executive cards
+
+buttons
+
+status indicators
+
+forms
+
+modals
+
+tables
+
+briefing layouts
+
+loading states
+
+empty states
+
+mobile layouts
+
+
+Executive Identity
+
+Verify that each executive uses the correct canonical symbol and visual language:
+
+IRIS — compass star
+
+APEX — hex lattice
+
+KATANA — sword-circle
+
+SENTINEL — guardian shield
+
+
+Do not substitute generic icons.
+
+Do not merge their identities.
+
+Implementation Rules
+
+Reuse and extend existing components and design tokens.
+
+Do not create duplicate component systems.
+
+Where repeated visual patterns exist, consolidate them into shared components or tokens.
+
+Do not change backend behavior, operational logic, routes, authentication, or data flow.
+
+Deliverables
+
+Before making broad changes, provide:
+
+1. A list of screens reviewed.
+
+
+2. The major canon drift found.
+
+
+3. Shared tokens or components that should be corrected first.
+
+
+4. A proposed implementation order.
+
+
+5. Any conflicts between the current app and the uploaded references.
+
+
+
+Then implement the corrections in small, verifiable passes.
+
+Run typecheck and production build after each pass.
+
+Next Phase
+
+After the canon audit is complete and the shared design system is stable, build the /hq landing experience using the canonical four-column executive layout from the uploaded references.
+
+Do not begin the HQ hero panel until the audit findings and shared design corrections are complete.
+
+
+---
+
+That order is the cleanest:
+
+canon audit → shared design fixes → HQ landing page → executive presence components.

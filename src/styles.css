@@ -296,50 +296,5 @@
 }
 @utility presence-react { animation: presence-react 0.7s ease-out 1; }
 
-/* ── Listening pulse — subtle ring that expands when an exec is listening ── */
-@keyframes presence-listen {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50%       { opacity: 0.8; transform: scale(1.012); }
-}
-@utility presence-listen { animation: presence-listen 2.8s ease-in-out infinite; }
-
-/* ── Section entry — each HQ section fades+slides in from below ── */
-@keyframes mos-section-enter {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@utility mos-section-enter {
-  animation: mos-section-enter 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-/* ── Page entry — the main content area slides in when route changes ── */
-@keyframes mos-page-enter {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@utility mos-page-enter {
-  animation: mos-page-enter 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-/* ── Language fade — text fades when the language toggles ── */
-@keyframes mos-lang-fade {
-  0%   { opacity: 0; transform: translateY(3px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-@utility mos-lang-fade {
-  animation: mos-lang-fade 0.25s ease-out both;
-}
-
-/* ── Shimmer skeleton for loading states ── */
-@keyframes mos-shimmer {
-  from { background-position: -200% 0; }
-  to   { background-position: 200% 0; }
-}
-@utility mos-shimmer {
-  background: linear-gradient(90deg, transparent 25%, oklch(0.25 0.01 260 / 0.6) 50%, transparent 75%);
-  background-size: 200% 100%;
-  animation: mos-shimmer 1.6s ease-in-out infinite;
-}
-
 
 

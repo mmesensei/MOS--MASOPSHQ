@@ -12,8 +12,6 @@ import { BoardroomVoiceConsole } from "@/components/boardroom-voice-console";
 import { TranscriptPanel } from "@/components/transcript-panel";
 import { FoundingVipBanner } from "@/components/founding-vip-banner";
 import { ExecChamber } from "@/components/exec-chamber";
-import { SectionBoundary } from "@/components/section-boundary";
-import { useT } from "@/lib/i18n";
 import { ArrowRight, Users, Target, Sparkles, BookOpen, Shield } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
@@ -22,7 +20,6 @@ export const Route = createFileRoute("/_authenticated/hq")({
 });
 
 function HQ() {
-  const t = useT();
   const profile = useQuery({ queryKey: ["profile"], queryFn: () => getProfile() });
   const missions = useQuery({ queryKey: ["missions"], queryFn: () => listMissionsV2() });
   const councils = useQuery({ queryKey: ["councils"], queryFn: () => listCouncilSessions() });
@@ -31,7 +28,7 @@ function HQ() {
   useEffect(() => { seedSopsIfEmpty().catch(() => void 0); }, []);
   useAwarenessScan("hq_load", "/hq");
 
-  const name = profile.data?.display_name || t("label_operator", "Operator");
+  const name = profile.data?.display_name || "Operator";
   const activeMissions = (missions.data ?? []).filter(
     (m) => !["completed", "archived", "held"].includes(m.stage),
   );
@@ -66,14 +63,14 @@ function HQ() {
                   className="h-1.5 w-1.5 rounded-full bg-status-success motion-safe:status-live"
                   aria-hidden="true"
                 />
-                {t("hq_status", "Executive Headquarters · System Operational")}
+                Executive Headquarters · System Operational
               </div>
               <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight">
-                {t("hq_welcome", "Welcome back,")}{" "}
-                <span className="text-gold">{name}</span>.
+                Welcome back, <span className="text-gold">{name}</span>.
               </h1>
               <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-                {t("hq_desc", "The Council is standing by. Charter a mission, convene for a decision, or step into any executive's office.")}
+                The Council is standing by. Charter a mission, convene for a decision, or step into any
+                executive's office.
               </p>
             </div>
 
@@ -94,36 +91,30 @@ function HQ() {
         </header>
 
         {/* ── Living Boardroom — R3F stage reacting to presence bus ───────── */}
-        <section className="mb-4 mos-section-enter" aria-label="Executive Boardroom">
-          <SectionBoundary label="Boardroom">
-            <Boardroom />
-          </SectionBoundary>
+        <section className="mb-4" aria-label="Executive Boardroom">
+          <Boardroom />
         </section>
-        <section className="mb-10 grid gap-4 md:grid-cols-2 mos-section-enter" aria-label="Boardroom controls" style={{ animationDelay: "60ms" }}>
-          <SectionBoundary label="Voice Console">
-            <BoardroomVoiceConsole />
-          </SectionBoundary>
-          <SectionBoundary label="Transcript">
-            <TranscriptPanel />
-          </SectionBoundary>
+        <section className="mb-10 grid gap-4 md:grid-cols-2" aria-label="Boardroom controls">
+          <BoardroomVoiceConsole />
+          <TranscriptPanel />
         </section>
 
         {/* ── Executive Command Area ──────────────────────────────────────── */}
-        <section className="mos-section-enter" style={{ animationDelay: "120ms" }} aria-label="Executive Command">
+        <section aria-label="Executive Command">
           <div className="mb-6 flex items-center justify-between">
             <div>
               <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted-foreground">
-                {t("hq_command_active", `Command · ${EXECUTIVE_LIST.length} Executives Active`)}
+                Command · {EXECUTIVE_LIST.length} Executives Active
               </div>
               <h2 className="mt-1 font-display text-2xl font-semibold">
-                {t("hq_convene", "Executive Council")}
+                Executive Council
               </h2>
             </div>
             <Link
               to="/council"
               className="hidden sm:inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-ring"
             >
-              {t("hq_convene", "Convene Council")} <ArrowRight className="h-3 w-3" aria-hidden="true" />
+              Convene Council <ArrowRight className="h-3 w-3" aria-hidden="true" />
             </Link>
           </div>
 
@@ -133,23 +124,21 @@ function HQ() {
             role="list"
             aria-label="Executive chambers"
           >
-            {EXECUTIVE_LIST.map((e, i) => (
-              <div key={e.id} role="listitem" className="mos-section-enter" style={{ animationDelay: `${160 + i * 60}ms` }}>
-                <SectionBoundary label={e.name}>
-                  <ExecChamber executive={e} />
-                </SectionBoundary>
+            {EXECUTIVE_LIST.map((e) => (
+              <div key={e.id} role="listitem">
+                <ExecChamber executive={e} />
               </div>
             ))}
           </div>
         </section>
 
         {/* ── Mission Strip ───────────────────────────────────────────────── */}
-        <section className="mt-8 mb-10 mos-section-enter" style={{ animationDelay: "400ms" }} aria-label="Mission status">
+        <section className="mt-8 mb-10" aria-label="Mission status">
           <div className="hq-panel flex flex-wrap items-center gap-x-6 gap-y-3 px-6 py-4">
             {/* Active mission count */}
             <div>
               <div className="text-[9px] font-mono uppercase tracking-[0.3em] text-muted-foreground">
-                {t("hq_active_missions", "Active Missions")}
+                Active Missions
               </div>
               <div className="mt-0.5 font-display text-2xl font-semibold tabular-nums">
                 {missions.isLoading ? "—" : activeMissions.length}
@@ -161,12 +150,12 @@ function HQ() {
             {/* Current objective */}
             <div className="min-w-0 flex-1">
               <div className="text-[9px] font-mono uppercase tracking-[0.3em] text-muted-foreground">
-                {t("hq_current_obj", "Current Objective")}
+                Current Objective
               </div>
               <div className="mt-0.5 truncate text-sm text-foreground/80">
                 {missions.isLoading
-                  ? "…"
-                  : currentObjective ?? t("hq_obj_empty", "Awaiting briefing")}
+                  ? "Loading…"
+                  : currentObjective ?? "Awaiting briefing"}
               </div>
             </div>
 
@@ -178,7 +167,7 @@ function HQ() {
                 className="h-2 w-2 rounded-full bg-status-success motion-safe:status-live"
                 aria-hidden="true"
               />
-              <span className="text-xs text-muted-foreground">{t("hq_systems_ok", "All systems operational")}</span>
+              <span className="text-xs text-muted-foreground">All systems operational</span>
             </div>
 
             {/* Actions */}
@@ -188,13 +177,13 @@ function HQ() {
                 className="inline-flex items-center gap-1.5 rounded-md border border-gold/25 px-3 py-1.5 text-xs font-medium text-gold transition-colors hover:bg-gold/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
               >
                 <Sparkles className="h-3 w-3" aria-hidden="true" />
-                {t("hq_new_mission", "New mission")}
+                New mission
               </Link>
               <Link
                 to="/missions"
                 className="inline-flex items-center gap-1.5 rounded-md border border-border/60 px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-accent/50 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
               >
-                {t("hq_all_missions", "All missions")}
+                All missions
                 <ArrowRight className="h-3 w-3" aria-hidden="true" />
               </Link>
             </div>
@@ -202,27 +191,27 @@ function HQ() {
         </section>
 
         {/* ── Quick Actions ───────────────────────────────────────────────── */}
-        <section className="mb-10 grid gap-4 md:grid-cols-3 mos-section-enter" style={{ animationDelay: "460ms" }} aria-label="Quick actions">
+        <section className="mb-10 grid gap-4 md:grid-cols-3" aria-label="Quick actions">
           <Link
             to="/missions/new"
-            className="hq-panel p-5 transition-all duration-200 motion-safe:hover:-translate-y-1 motion-safe:hover:shadow-lg focus-visible:outline-2 focus-visible:outline-ring"
+            className="hq-panel p-5 transition motion-safe:hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-ring"
           >
             <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.25em] text-gold">
-              <Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> {t("hq_new_mission", "New Mission")}
+              <Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> New Mission
             </div>
-            <div className="mt-3 font-display text-lg font-semibold">{t("mission_charter", "Charter with the Council")}</div>
+            <div className="mt-3 font-display text-lg font-semibold">Charter with the Council</div>
             <p className="mt-1 text-sm text-muted-foreground">
-              {t("hq_charter_desc", "Walk through IRIS → APEX → KATANA → SENTINEL.")}
+              Walk through IRIS → APEX → KATANA → SENTINEL.
             </p>
           </Link>
           <Link
             to="/council"
-            className="hq-panel p-5 transition-all duration-200 motion-safe:hover:-translate-y-1 motion-safe:hover:shadow-lg focus-visible:outline-2 focus-visible:outline-ring"
+            className="hq-panel p-5 transition motion-safe:hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-ring"
           >
             <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.25em] text-iris">
-              <Users className="h-3.5 w-3.5" aria-hidden="true" /> {t("nav_council", "Council Room")}
+              <Users className="h-3.5 w-3.5" aria-hidden="true" /> Council Room
             </div>
-            <div className="mt-3 font-display text-lg font-semibold">{t("hq_quick_council", "Convene for a decision")}</div>
+            <div className="mt-3 font-display text-lg font-semibold">Convene for a decision</div>
             <p className="mt-1 text-sm text-muted-foreground">
               {councils.data?.length ?? 0} previous session
               {(councils.data?.length ?? 0) === 1 ? "" : "s"}
@@ -230,41 +219,39 @@ function HQ() {
           </Link>
           <Link
             to="/missions"
-            className="hq-panel p-5 transition-all duration-200 motion-safe:hover:-translate-y-1 motion-safe:hover:shadow-lg focus-visible:outline-2 focus-visible:outline-ring"
+            className="hq-panel p-5 transition motion-safe:hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-ring"
           >
             <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.25em] text-katana">
-              <Target className="h-3.5 w-3.5" aria-hidden="true" /> {t("hq_active_missions", "Active Missions")}
+              <Target className="h-3.5 w-3.5" aria-hidden="true" /> Active Missions
             </div>
             <div className="mt-3 font-display text-lg font-semibold">
-              {activeMissions.length} {t("hq_in_flight", "in flight")}
+              {activeMissions.length} in flight
             </div>
             <p className="mt-1 text-sm text-muted-foreground">
-              {t("hq_track_missions", "Track lifecycle, log activity, capture lessons.")}
+              Track lifecycle, log activity, capture lessons.
             </p>
           </Link>
         </section>
 
         {/* ── Executive Briefing Feed ─────────────────────────────────────── */}
-        <SectionBoundary label="Executive Briefing">
-          <ExecutiveBriefingFeed />
-        </SectionBoundary>
+        <ExecutiveBriefingFeed />
 
         {/* ── Growth Journal ──────────────────────────────────────────────── */}
-        <section className="mb-10 mos-section-enter" style={{ animationDelay: "520ms" }} aria-label="Growth journal">
+        <section className="mb-10" aria-label="Growth journal">
           <div className="mb-3 flex items-baseline justify-between">
             <div>
               <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted-foreground">
-                {t("hq_journal_title", "Growth Journal")}
+                Growth Journal
               </div>
               <h2 className="mt-1 font-display text-xl font-semibold">
-                {t("hq_journal_subtitle", "What your executives have learned")}
+                What your executives have learned
               </h2>
             </div>
             <Link
               to="/sops"
               className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-ring"
             >
-              <BookOpen className="h-3 w-3" aria-hidden="true" /> {t("nav_library", "Library")}
+              <BookOpen className="h-3 w-3" aria-hidden="true" /> Library
             </Link>
           </div>
 
@@ -278,7 +265,7 @@ function HQ() {
                   sentinel: "text-sentinel",
                 };
                 return (
-                  <div key={j.id} className="flex items-start gap-3 p-3 transition-colors hover:bg-surface/40">
+                  <div key={j.id} className="flex items-start gap-3 p-3">
                     <ExecutivePresence
                       executive={j.executive as never}
                       state="idle"
@@ -306,7 +293,8 @@ function HQ() {
             </div>
           ) : (
             <div className="hq-panel p-6 text-center text-sm text-muted-foreground">
-              {t("hq_journal_empty", "The executives haven't written any journal entries yet. They'll start learning as you interact with them.")}
+              The executives haven't written any journal entries yet. They'll start learning as you
+              interact with them.
             </div>
           )}
         </section>

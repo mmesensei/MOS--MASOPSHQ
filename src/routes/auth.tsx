@@ -19,19 +19,10 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [busy, setBusy] = useState(false);
-  // Defer render to client: TanStack Start wraps ssr:false routes in <Suspense>
-  // on the client but server-renders the component, causing a structural
-  // hydration mismatch. Starting with `mounted = false` ensures server and
-  // client agree on the initial render (null), eliminating the throw.
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (mounted) document.getElementById("email-input")?.focus();
-  }, [mode, mounted]);
+    document.getElementById("email-input")?.focus();
+  }, [mode]);
 
   async function handleEmail(e: React.FormEvent) {
     e.preventDefault();
@@ -77,8 +68,6 @@ function AuthPage() {
       setBusy(false);
     }
   }
-
-  if (!mounted) return null;
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-12">

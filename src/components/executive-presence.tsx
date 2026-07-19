@@ -190,7 +190,7 @@ export function ExecutivePresence({ executive, state = "idle", className, size =
       <div
         className={cn(
           "absolute inset-0 will-change-transform",
-          !isChip && state === "listening" ? "presence-listen" : !isChip && "presence-idle-scan",
+          !isChip && "presence-idle-scan",
           pulse === "nod"   && "presence-nod",
           pulse === "react" && "presence-react",
         )}

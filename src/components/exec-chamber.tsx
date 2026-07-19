@@ -18,7 +18,6 @@ import type { Executive, ExecutiveId } from "@/lib/executives";
 import { ExecSymbol } from "@/components/exec-symbol";
 import { ExecutivePresence, type PresenceState } from "@/components/executive-presence";
 import { useExecPresence } from "@/lib/presence-bus";
-import { useT } from "@/lib/i18n";
 
 // Canonical default presence per executive (set during design review)
 const PRESENCE_DEFAULT: Record<ExecutiveId, PresenceState> = {
@@ -29,12 +28,11 @@ const PRESENCE_DEFAULT: Record<ExecutiveId, PresenceState> = {
 };
 
 // Canonical primary action per executive — only valid existing routes
-// Labels are i18n keys; English fallbacks here
-const EXEC_ACTION: Record<ExecutiveId, { labelKey: string; labelEn: string; path: string }> = {
-  iris:     { labelKey: "exec_action_iris",     labelEn: "View Strategy",    path: "/office/iris" },
-  apex:     { labelKey: "exec_action_apex",     labelEn: "Open Systems",     path: "/office/apex" },
-  katana:   { labelKey: "exec_action_katana",   labelEn: "View Operations",  path: "/office/katana" },
-  sentinel: { labelKey: "exec_action_sentinel", labelEn: "Open Security",    path: "/office/sentinel" },
+const EXEC_ACTION: Record<ExecutiveId, { label: string; path: string }> = {
+  iris:     { label: "View Strategy",    path: "/office/iris" },
+  apex:     { label: "Open Systems",     path: "/office/apex" },
+  katana:   { label: "View Operations",  path: "/office/katana" },
+  sentinel: { label: "Open Security",    path: "/office/sentinel" },
 };
 
 // Static Tailwind class maps — must be literal strings for purge to include them
@@ -62,7 +60,6 @@ export function ExecChamber({ executive: e, summary }: ExecChamberProps) {
   const live = useExecPresence(e.id, PRESENCE_DEFAULT[e.id]);
   const action = EXEC_ACTION[e.id];
   const isActive = live !== "idle";
-  const t = useT();
 
   return (
     <article
@@ -153,10 +150,10 @@ export function ExecChamber({ executive: e, summary }: ExecChamberProps) {
         <Link
           // Pre-existing TanStack Router dynamic route type — works at runtime
           to={action.path as never}
-          className={`mt-auto pt-4 inline-flex items-center justify-center gap-1.5 rounded-md border border-current/20 px-3 py-2 text-xs font-medium transition-all duration-200 hover:border-current/40 hover:bg-current/10 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${e.colorClass}`}
-          aria-label={`${t(action.labelKey, action.labelEn)} — enter ${e.name}'s ${e.environment}`}
+          className={`mt-auto pt-4 inline-flex items-center justify-center gap-1.5 rounded-md border border-current/20 px-3 py-2 text-xs font-medium transition-colors hover:border-current/40 hover:bg-current/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${e.colorClass}`}
+          aria-label={`${action.label} — enter ${e.name}'s ${e.environment}`}
         >
-          {t(action.labelKey, action.labelEn)}
+          {action.label}
           <ArrowRight className="h-3 w-3" aria-hidden="true" />
         </Link>
       </div>

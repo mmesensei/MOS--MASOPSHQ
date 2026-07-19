@@ -108,16 +108,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
-  // suppressHydrationWarning on html/head/body: TanStack Start's TSD debug
-  // plugin adds `data-tsd-source` attributes during SSR that are absent on the
-  // client. Without this, React 18 discards the entire server-rendered tree and
-  // forces a full client re-render — which can trigger the root ErrorComponent.
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
-      <head suppressHydrationWarning>
+    <html lang="en" className="dark">
+      <head>
         <HeadContent />
       </head>
-      <body suppressHydrationWarning>
+      <body>
         {children}
         <Scripts />
       </body>
