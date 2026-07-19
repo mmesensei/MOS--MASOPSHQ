@@ -1,0 +1,1 @@
+DELETE FROM public.institutional_documents WHERE is_seed = true AND source_filename IN ('BiBle.pdf','Bible_V2.pdf','V3.pdf');

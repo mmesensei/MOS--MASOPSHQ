@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /hq
+Disallow: /office/
+Disallow: /council
+Disallow: /missions
+Disallow: /library

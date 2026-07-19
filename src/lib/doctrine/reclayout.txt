@@ -1,0 +1,41 @@
+PREVIOUS LAYOUT
+                  YELLOW= FINISHED PRODUCTS
+                  RED= QUARANTINE
+                  GREY= LOADING LANES/OPERATIONS
+
+
+
+
+                  PROCESS:                                                   RESULTS:
+                  Originally, shipments would come in and load onto the
+                  lanes.                                                     ERRORS
+                  From the lanes the shipments were seperated, verified,     SHIPMENTS GETTING CONFUSED, VERIFICATION
+                  received,                                                  INCORRECT
+                  then products are moved to the put away lane were it was   PEOPLE IN EACH OTHERS PATH, WAITING TO USE
+                  picked up and put away                                     EQUIPMENT, RECEIVE, ECT.
+                                                                             PICKERS PICKING PARTS NOT RECEIVED ASIDE FROM
+                                                                             PARTS RECEIVED
+NEW LAYOUT                                                                   CONGESTED
+                                                                             HIGH VOLUME SHIPMENTS TAKING ALOT OF TIME TO
+                                                                             RECEIVE
+
+
+
+                  GREY= LOADING LANES
+                  RED= QUARANTINE
+                  BLUE= OPERATIONS
+                  YELLOW= FINISHED PRODUCTS
+
+
+
+
+                  PROCESS:                                                   RESULTS:
+                  SHIPMENTS LOADED INTO LOADING AREA                         WORK FLOW IS 1 MOTION DOWNWARDS
+                  1 SHIPMENT AT A TIME IS BROUGHT TO OPERATIONS AREA         DESIGNATED AREAS FROM START TO FINISH TO AVOID
+                  TO VERIFY, RECEIVE AND PUTAWAY                             CONFUSIONS.
+                  PRODUCT IS MOVED TO FINISHED SECTION WERE PUT              ERRORS ARE CAUGHT BEFORE BEING PLACED IN
+                  AWAY RETRIEVES PARTS                                       FINISHED AREA
+                                                                             EVERYONE MOVES IN THEIR OWN LANE AVOIDING
+                                                                             TRAFFIC JAMS
+                                                                             ABILITY TO RECEIVE HIGH VOLUME IN SHORT TIME
+

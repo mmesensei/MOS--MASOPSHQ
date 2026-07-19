@@ -1,0 +1,65 @@
+MOS FOUNDING LIFETIME ACCESS & PRIVACY CHARTER
+================================================
+
+1. LIFETIME ENTITLEMENT
+The Owner account and the first 100 eligible Founding VIP accounts hold a
+permanent, non-expiring "Founding Lifetime VIP" entitlement. This is an
+access right, not a recurring subscription. It does not expire, renew, or
+require payment while MOS continues to operate. UI must display it as
+"Founding Lifetime VIP" or "Lifetime Founder" and MUST NEVER show an
+expiration date.
+
+2. PROTECTED LIFETIME ACCESS
+Founding Lifetime access must remain active indefinitely and MUST NOT be
+removed by pricing changes, plan changes, product releases, updates,
+migrations, ownership restructuring, feature additions, billing changes,
+membership restructuring, redesigns, version upgrades, or new tiers.
+Future tiers must not reduce or replace Founding Lifetime benefits.
+
+3. ROLE PROTECTION (PERMISSION ISOLATION)
+Founding Lifetime VIP is stored as a profile flag, NEVER as a role in
+public.user_roles. Founding Lifetime users are premium end-users only and
+MUST NEVER be granted: Owner, Administrator, Developer, database, security
+admin, source-code, internal-tools, system-config, or user-management
+capabilities. Owner role remains isolated to the owner account.
+
+4. SECURITY
+- Entitlement fields (is_founding_vip, founding_vip_number, vip_status,
+  vip_granted_at, vip_revoked_at, subscription_tier, is_internal_account,
+  fraud_flag, owner_notes) are protected by a BEFORE UPDATE trigger:
+  only the owner (verified via is_owner(auth.uid())) can change them.
+- Assignment is a SECURITY DEFINER function triggered by
+  auth.users.email_confirmed_at (verified email only), with row-level
+  locking on founding_vip_config to guarantee at most 100 slots.
+- Never trust frontend, localStorage, cookies, or client requests for
+  lifetime status. All checks flow through RLS + server functions.
+- Every grant, revocation, restore, fraud flag, manual grant, and
+  promotion-state change writes an immutable row to founding_vip_audit.
+
+5. PRIVACY
+User information is never sold or shared except to operate the service or
+comply with applicable law. Protections in force: secure authentication,
+principle of least privilege, row-level security on all user-scoped
+tables, comprehensive audit logging, and protection against privilege
+escalation (roles live in a separate table checked by SECURITY DEFINER
+has_role()).
+
+6. ACCOUNT RECOVERY
+Lifetime access survives password resets, email updates, device changes,
+platform updates, and database migrations. Compromised accounts may be
+temporarily suspended (owner_revoke_vip with reason) and MUST be restored
+(owner_restore_vip) once ownership is verified.
+
+7. EXCEPTIONAL CIRCUMSTANCES (OWNER-ONLY)
+Revocation is reserved for: user-requested deletion, permanent compromise
+requiring migration, or a binding legal order. Every such action requires
+the owner and writes an immutable audit record via founding_vip_audit.
+
+8. TESTING INVARIANTS
+- Owner account always retains Owner role AND Lifetime entitlement.
+- The first 100 email-verified, non-internal, non-admin accounts receive
+  a permanent Founding Lifetime VIP number in [1..100].
+- Lifetime status persists across deploys, upgrades, and migrations.
+- Users cannot self-modify their role or entitlement fields.
+- Founding Lifetime users receive all premium features and NO
+  administrative permissions.
