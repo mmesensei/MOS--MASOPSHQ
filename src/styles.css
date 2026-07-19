@@ -1,0 +1,300 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * MOS — Mastermind Operations System
+ * Design system: a private executive headquarters, not a SaaS app.
+ * Dark obsidian surfaces, precise executive typography, four signature
+ * executive colors (IRIS/APEX/KATANA/SENTINEL) used as accent identity.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
+  --color-gold-glow: var(--gold-glow);
+
+  --color-iris: var(--iris);
+  --color-iris-foreground: var(--iris-foreground);
+  --color-iris-glow: var(--iris-glow);
+  --color-apex: var(--apex);
+  --color-apex-foreground: var(--apex-foreground);
+  --color-apex-glow: var(--apex-glow);
+  --color-katana: var(--katana);
+  --color-katana-foreground: var(--katana-foreground);
+  --color-katana-glow: var(--katana-glow);
+  --color-sentinel: var(--sentinel);
+  --color-sentinel-foreground: var(--sentinel-foreground);
+  --color-sentinel-glow: var(--sentinel-glow);
+
+  --color-status-success: var(--status-success);
+  --color-status-warning: var(--status-warning);
+  --color-status-danger: var(--status-danger);
+  --color-status-info: var(--status-info);
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+:root {
+  --radius: 0.5rem;
+
+  /* Obsidian executive HQ palette — deep black command center */
+  --background: oklch(0.09 0.010 260);
+  --foreground: oklch(0.96 0.005 250);
+  --surface: oklch(0.13 0.012 260);
+  --surface-raised: oklch(0.16 0.014 262);
+  --card: oklch(0.15 0.012 262);
+  --card-foreground: oklch(0.96 0.005 250);
+  --popover: oklch(0.14 0.012 262);
+  --popover-foreground: oklch(0.96 0.005 250);
+
+  --primary: oklch(0.92 0.02 260);
+  --primary-foreground: oklch(0.16 0.014 260);
+  --secondary: oklch(0.20 0.016 262);
+  --secondary-foreground: oklch(0.9 0.01 250);
+  --muted: oklch(0.18 0.012 262);
+  --muted-foreground: oklch(0.58 0.018 260);
+  --accent: oklch(0.20 0.016 262);
+  --accent-foreground: oklch(0.96 0.005 250);
+  --destructive: oklch(0.62 0.22 25);
+  --destructive-foreground: oklch(0.98 0.005 250);
+
+  --border: oklch(0.22 0.012 262);
+  --border-strong: oklch(0.30 0.018 262);
+  --input: oklch(0.18 0.012 262);
+  --ring: oklch(0.72 0.14 75);
+
+  /* Canonical brand gold — the single defining accent across all surfaces */
+  --gold: oklch(0.72 0.14 75);
+  --gold-foreground: oklch(0.10 0.008 260);
+  --gold-glow: oklch(0.72 0.14 75 / 0.30);
+
+  /* Semantic status tokens — replaces hardcoded Tailwind colors in dashboards */
+  --status-success: oklch(0.72 0.16 155);
+  --status-warning: oklch(0.78 0.17 75);
+  --status-danger: oklch(0.65 0.22 25);
+  --status-info: oklch(0.72 0.14 210);
+
+  /* Executive signature colors */
+  --iris: oklch(0.68 0.19 285);           /* violet — vision, wisdom */
+  --iris-foreground: oklch(0.98 0.005 250);
+  --iris-glow: oklch(0.68 0.19 285 / 0.35);
+
+  --apex: oklch(0.72 0.14 210);           /* cyan-steel — structure */
+  --apex-foreground: oklch(0.12 0.02 220);
+  --apex-glow: oklch(0.72 0.14 210 / 0.35);
+
+  --katana: oklch(0.7 0.2 25);            /* crimson blade — execution */
+  --katana-foreground: oklch(0.98 0.005 250);
+  --katana-glow: oklch(0.7 0.2 25 / 0.35);
+
+  --sentinel: oklch(0.72 0.16 155);       /* emerald — protection */
+  --sentinel-foreground: oklch(0.12 0.02 160);
+  --sentinel-glow: oklch(0.72 0.16 155 / 0.35);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html, body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    /* Neutral deep-blue atmospheric glow — no purple or green tint */
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, oklch(0.22 0.04 260 / 0.30), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 85% 90%, oklch(0.18 0.03 255 / 0.20), transparent 55%);
+    background-attachment: fixed;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+  ::selection {
+    background: oklch(0.4 0.15 275 / 0.5);
+  }
+}
+
+@utility hq-panel {
+  background: linear-gradient(180deg, var(--color-surface-raised), var(--color-surface));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 0 0 oklch(1 0 0 / 0.03) inset, 0 20px 40px -20px oklch(0 0 0 / 0.6);
+}
+
+@utility exec-glow-gold {
+  box-shadow: 0 0 0 1px var(--gold-glow), 0 0 40px -8px var(--gold-glow);
+}
+
+@utility page-root {
+  margin-inline: auto;
+  max-width: 72rem;
+  padding-inline: 1.5rem;
+  padding-block: 2.5rem;
+}
+
+@utility exec-glow-iris {
+  box-shadow: 0 0 0 1px var(--iris-glow), 0 0 40px -8px var(--iris-glow);
+}
+@utility exec-glow-apex {
+  box-shadow: 0 0 0 1px var(--apex-glow), 0 0 40px -8px var(--apex-glow);
+}
+@utility exec-glow-katana {
+  box-shadow: 0 0 0 1px var(--katana-glow), 0 0 40px -8px var(--katana-glow);
+}
+@utility exec-glow-sentinel {
+  box-shadow: 0 0 0 1px var(--sentinel-glow), 0 0 40px -8px var(--sentinel-glow);
+}
+
+@keyframes pulse-ring {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+@utility status-live {
+  animation: pulse-ring 2.4s ease-in-out infinite;
+}
+
+@keyframes avatar-breath {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+@utility avatar-breath {
+  animation: avatar-breath 4.5s ease-in-out infinite;
+}
+
+@keyframes avatar-tilt {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+@utility avatar-tilt {
+  animation: avatar-tilt 3.2s ease-in-out infinite;
+  transform-origin: 50% 55%;
+}
+
+/* Executive Presence — living portrait */
+@keyframes presence-breath {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50%      { transform: scale(1.015) translateY(-2px); }
+}
+@utility presence-breath { animation: presence-breath 6s ease-in-out infinite; }
+
+@keyframes presence-tilt {
+  0%, 100% { transform: rotate(-0.6deg) scale(1.01); }
+  50%      { transform: rotate(0.6deg) scale(1.02); }
+}
+@utility presence-tilt { animation: presence-tilt 4.5s ease-in-out infinite; transform-origin: 50% 45%; }
+
+@keyframes presence-speak {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50%      { transform: scale(1.02); filter: brightness(1.08); }
+}
+@utility presence-speak { animation: presence-speak 1.6s ease-in-out infinite; }
+
+/* Voice waveform bars — a visible "mouth" signal while speaking */
+@keyframes voice-bar {
+  0%, 100% { transform: scaleY(0.35); opacity: 0.55; }
+  50%      { transform: scaleY(1);    opacity: 1; }
+}
+@utility voice-bar { animation: voice-bar 0.75s ease-in-out infinite; transform-origin: 50% 50%; }
+
+/* Sentinel mask-eye pulse — the guardian's lights come alive */
+@keyframes mask-glow {
+  0%, 100% { opacity: 0.55; filter: blur(2px); transform: scale(1); }
+  50%      { opacity: 1;    filter: blur(3px); transform: scale(1.15); }
+}
+@utility mask-glow { animation: mask-glow 0.9s ease-in-out infinite; }
+
+/* Blink veil — a thin band sweeps over the eyes ~ every 5s */
+@keyframes presence-blink {
+  0%, 92%, 100% { transform: translateY(-120%); opacity: 0; }
+  95%           { transform: translateY(38%);   opacity: 0.9; }
+  97%           { transform: translateY(42%);   opacity: 0.9; }
+  99%           { transform: translateY(120%);  opacity: 0; }
+}
+@utility presence-blink {
+  animation: presence-blink 5.4s ease-in-out infinite;
+}
+
+/* Idle micro-sway — always on, gentle, layered under parallax translate */
+/* ── Idle float — the whole card rises and falls gently ── */
+@keyframes presence-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+@utility presence-float { animation: presence-float 7s ease-in-out infinite; }
+
+/* ── Idle scan — image pans slowly left↔right, like eyes wandering ── */
+@keyframes presence-idle-scan {
+  0%   { transform: translateX(0px)   scale(1.04); }
+  25%  { transform: translateX(-5px)  scale(1.04); }
+  75%  { transform: translateX(5px)   scale(1.04); }
+  100% { transform: translateX(0px)   scale(1.04); }
+}
+@utility presence-idle-scan { animation: presence-idle-scan 14s ease-in-out infinite; }
+
+@keyframes presence-sway {
+  0%, 100% { transform: translate3d(0,0,0) rotate(0deg); }
+  25%      { transform: translate3d(-2px,-1px,0) rotate(-0.4deg); }
+  50%      { transform: translate3d(0,-3px,0)  rotate(0deg); }
+  75%      { transform: translate3d(2px,-1px,0) rotate(0.4deg); }
+}
+@utility presence-sway { animation: presence-sway 8s ease-in-out infinite; }
+
+/* Nod — a short reactive dip triggered on events */
+@keyframes presence-nod {
+  0%   { transform: translateY(0)     rotate(0deg); }
+  30%  { transform: translateY(6px)   rotate(1.2deg); }
+  60%  { transform: translateY(-2px)  rotate(-0.6deg); }
+  100% { transform: translateY(0)     rotate(0deg); }
+}
+@utility presence-nod { animation: presence-nod 0.9s ease-out 1; }
+
+/* React — a brief startle for warnings/new events */
+@keyframes presence-react {
+  0%   { transform: scale(1)    translateY(0); filter: brightness(1); }
+  20%  { transform: scale(1.04) translateY(-4px); filter: brightness(1.15); }
+  60%  { transform: scale(0.99) translateY(1px); filter: brightness(1.02); }
+  100% { transform: scale(1)    translateY(0); filter: brightness(1); }
+}
+@utility presence-react { animation: presence-react 0.7s ease-out 1; }
+
+
+
