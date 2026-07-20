@@ -14,6 +14,7 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
+  const [mounted, setMounted] = useState(false);
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,8 +22,14 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    document.getElementById("email-input")?.focus();
-  }, [mode]);
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted) document.getElementById("email-input")?.focus();
+  }, [mode, mounted]);
+
+  if (!mounted) return null;
 
   async function handleEmail(e: React.FormEvent) {
     e.preventDefault();

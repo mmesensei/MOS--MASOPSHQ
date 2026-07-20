@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { MosShell } from "@/components/mos-shell";
+import { RouteError } from "@/components/route-error";
 import { ExecutivePresence } from "@/components/executive-presence";
 import { useIsAdmin } from "@/hooks/use-is-admin";
 import { getActiveGoal, upsertGoal, listOpportunities, scanOpportunities, setOpportunityStatus } from "@/lib/engine.functions";
@@ -12,6 +13,7 @@ import { formatDistanceToNow } from "date-fns";
 
 export const Route = createFileRoute("/_authenticated/engine")({
   component: EnginePage,
+  errorComponent: RouteError,
 });
 
 function AdminOnlyGate() {

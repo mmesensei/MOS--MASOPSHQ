@@ -16,7 +16,8 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import type { Executive, ExecutiveId } from "@/lib/executives";
 import { ExecSymbol } from "@/components/exec-symbol";
-import { ExecutivePresence, type PresenceState } from "@/components/executive-presence";
+import { ExecutiveAvatar } from "@/components/executive-avatar";
+import type { PresenceState } from "@/components/executive-presence";
 import { useExecPresence } from "@/lib/presence-bus";
 
 // Canonical default presence per executive (set during design review)
@@ -114,9 +115,9 @@ export function ExecChamber({ executive: e, summary }: ExecChamberProps) {
         </div>
       </div>
 
-      {/* ── Portrait — full animation system from ExecutivePresence ──────── */}
+      {/* ── Portrait — routed through unified ExecutiveAvatar entry point ── */}
       <div className="relative mt-3 px-4">
-        <ExecutivePresence executive={e.id} state={live} size="bust" />
+        <ExecutiveAvatar executive={e.id} state={live} mode="portrait" portraitSize="bust" />
       </div>
 
       {/* ── Identity block ─────────────────────────────────────────────── */}

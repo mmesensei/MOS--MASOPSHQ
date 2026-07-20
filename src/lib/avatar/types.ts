@@ -2,16 +2,16 @@
 //
 // The avatar layer is PRESENTATION ONLY. No operational logic lives here.
 // State/availability/speaking are inputs; the framework maps them to visual
-// output (2D placeholder today, GLB models tomorrow) without callers caring
-// which renderer is active.
+// output (portrait today, GLB models and live video when assets are supplied)
+// without callers caring which renderer is active.
 
 import type { ExecutiveId } from "@/lib/executives";
 
 /**
- * Public state union — extended in FD-003B to cover the full production
- * lifecycle. Legacy states (`idle`/`listening`/`thinking`/`speaking`/
- * `reviewing`/`warning`) are preserved so every existing caller keeps
- * working. New states are additive and safe to opt into.
+ * Public state union — extended to cover the full production lifecycle.
+ * Legacy states (`idle`/`listening`/`thinking`/`speaking`/`reviewing`/
+ * `warning`) are preserved so every existing caller keeps working.
+ * New states are additive and safe to opt into.
  */
 export type AvatarState =
   | "idle"
@@ -33,8 +33,16 @@ export type AvatarEmotion =
   | "curious"
   | "pleased";
 
-/** Which renderer to use. "auto" picks 3D when a model is configured. */
-export type AvatarMode = "auto" | "placeholder" | "3d";
+/**
+ * Renderer selection.
+ *
+ * "auto"        — live (if asset) → 3d (if modelUrl) → portrait → placeholder
+ * "placeholder" — always the 2D SVG silhouette (zero cost)
+ * "portrait"    — 2D parallax portrait card (bust/chip) or R3F living scene (full)
+ * "3d"          — GLB/GLTF model via AvatarCanvas (requires modelUrl)
+ * "live"        — video clips from /public/assets/executives/<id>/live/
+ */
+export type AvatarMode = "auto" | "placeholder" | "portrait" | "3d" | "live";
 
 /** Camera presets for future cinematic scenes (boardroom, HQ, holo). */
 export type CameraPreset = "portrait" | "bust" | "wide" | "cinematic";
@@ -63,8 +71,6 @@ export interface VoiceProfileRef {
 /**
  * Animation clip references. Names are conventional GLB clip names — swap
  * without touching component code by editing the executive's config entry.
- * Any additional `.glb` files dropped into the executive's asset folder can
- * be referenced here (e.g. `gestures: { nod: "Nod", point: "Point" }`).
  */
 export interface AnimationProfile {
   idle: string;
@@ -82,38 +88,79 @@ export interface AnimationProfile {
 
 /**
  * Design canon — the immutable visual identity for each executive.
- * Sourced from the FD-003B founder directive artwork. Future 3D models
- * MUST match this canon; downstream tools (model pipeline, marketing,
- * HQ scene) can read it to stay in sync.
+ * Sourced from the FD-003B founder directive artwork.
  */
 export interface DesignCanon {
-  /** Short title shown in briefing surfaces. */
   role: string;
-  /** Visual descriptors (silhouette, attire, palette hints). */
   visualIdentity: readonly string[];
-  /** Personality descriptors (behavior, tone). */
   personality: readonly string[];
-  /** Environment / setting the executive is canonically framed in. */
   environment: string;
 }
 
-/**
- * Reserved slot for future Headquarters scene composition. Optional today;
- * populated by the HQ scene planner when multi-avatar scenes ship.
- */
+/** Reserved slot for future Headquarters scene composition. */
 export interface SpatialConfig {
-  /** Default position within an HQ scene (metres). */
   homePosition: [number, number, number];
-  /** Interaction radius — used by proximity/hover triggers. */
   interactionRadius: number;
-  /** Named waypoints the executive can walk to. */
   waypoints?: Record<string, [number, number, number]>;
+}
+
+/**
+ * Live video asset paths for the "live" renderer.
+ * Place .webm files (with .mp4 fallback) at:
+ *   /public/assets/executives/<id>/live/<clip>.webm
+ *
+ * All fields are optional — the renderer falls back gracefully when absent.
+ */
+export interface LiveAssets {
+  /** Static poster shown before video loads / in reduced-motion mode. */
+  poster?: string;
+  idle?: string;
+  listening?: string;
+  thinking?: string;
+  speaking?: string;
+  reviewing?: string;
+  working?: string;
+  warning?: string;
+  celebrating?: string;
+  offline?: string;
+}
+
+/**
+ * Per-executive overlay calibration for the portrait renderer.
+ * Override the default fixed-position eye/mouth overlays to match each
+ * executive's actual portrait crop. All values are CSS strings (e.g. "28%").
+ * Omit an overlay entirely to disable it for this executive.
+ */
+export interface OverlayCalibration {
+  /** Blink veil — horizontal band across the eye line. */
+  eyes?: { top: string; left: string; width: string } | null;
+  /** Speaking mouth indicator. */
+  mouth?: { top: string; left: string; width: string } | null;
+}
+
+/**
+ * Presentation calibration — per-executive positioning and overlay tuning.
+ * Values here centralise all the "magic numbers" that were previously
+ * scattered through individual route components.
+ */
+export interface PresentationConfig {
+  // 3D model transform (applied to the cloned GLB scene root)
+  modelScale?: number;
+  modelPosition?: [number, number, number];
+  modelRotation?: [number, number, number];
+  // 3D camera override (falls back to CameraPreset defaults)
+  cameraPosition?: [number, number, number];
+  cameraTarget?: [number, number, number];
+  // Portrait object-position CSS hint (e.g. "center top")
+  portraitObjectPosition?: string;
+  // Overlay calibration for the portrait renderer
+  overlayCalibration?: OverlayCalibration;
 }
 
 /** Per-executive avatar configuration. One entry drives every renderer. */
 export interface ExecutiveAvatarConfig {
   executive: ExecutiveId;
-  /** GLB/GLTF path. null → placeholder renderer. Drop model in, wire path. */
+  /** GLB/GLTF path. null → no 3D. Drop model in, wire path. */
   modelUrl: string | null;
   /** Optional lower-fidelity preview used while the full model streams. */
   previewUrl?: string | null;
@@ -131,6 +178,16 @@ export interface ExecutiveAvatarConfig {
   spatial?: SpatialConfig;
   /** Root folder for auxiliary animation clips (drop-in workflow). */
   assetRoot: string;
+  /**
+   * Live video assets. null → live mode falls back to portrait.
+   * Populate when executive video clips are supplied.
+   */
+  liveAssets: LiveAssets | null;
+  /**
+   * Per-executive presentation calibration — model positioning, camera
+   * overrides, portrait crop hints, and overlay tuning.
+   */
+  presentation?: PresentationConfig;
 }
 
 /** Runtime inputs the avatar reacts to. Composed by callers. */

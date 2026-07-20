@@ -4,6 +4,7 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
 import { MosShell } from "@/components/mos-shell";
+import { RouteError } from "@/components/route-error";
 import { convokeCouncil, listCouncilSessions } from "@/lib/mos.functions";
 import { EXECUTIVES } from "@/lib/executives";
 import { Users, ChevronDown, ChevronRight } from "lucide-react";
@@ -11,6 +12,7 @@ import { formatDistanceToNow } from "date-fns";
 
 export const Route = createFileRoute("/_authenticated/council")({
   component: CouncilPage,
+  errorComponent: RouteError,
 });
 
 function CouncilPage() {

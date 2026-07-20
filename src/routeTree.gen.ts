@@ -13,6 +13,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as ApiHealthRouteImport } from './routes/api/health'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AuthenticatedVaultRouteImport } from './routes/_authenticated/vault'
 import { Route as AuthenticatedSopsRouteImport } from './routes/_authenticated/sops'
@@ -58,6 +59,11 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/callback',
   path: '/callback',
   getParentRoute: () => AuthRoute,
+} as any)
+const ApiHealthRoute = ApiHealthRouteImport.update({
+  id: '/api/health',
+  path: '/api/health',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
@@ -218,6 +224,7 @@ export interface FileRoutesByFullPath {
   '/sops': typeof AuthenticatedSopsRouteWithChildren
   '/vault': typeof AuthenticatedVaultRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/health': typeof ApiHealthRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/committee/$reviewId': typeof AuthenticatedCommitteeReviewIdRoute
   '/committee/calibration': typeof AuthenticatedCommitteeCalibrationRoute
@@ -249,6 +256,7 @@ export interface FileRoutesByTo {
   '/sops': typeof AuthenticatedSopsRouteWithChildren
   '/vault': typeof AuthenticatedVaultRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/health': typeof ApiHealthRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/committee/$reviewId': typeof AuthenticatedCommitteeReviewIdRoute
   '/committee/calibration': typeof AuthenticatedCommitteeCalibrationRoute
@@ -281,6 +289,7 @@ export interface FileRoutesById {
   '/_authenticated/sops': typeof AuthenticatedSopsRouteWithChildren
   '/_authenticated/vault': typeof AuthenticatedVaultRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/health': typeof ApiHealthRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/_authenticated/committee/$reviewId': typeof AuthenticatedCommitteeReviewIdRoute
   '/_authenticated/committee/calibration': typeof AuthenticatedCommitteeCalibrationRoute
@@ -314,6 +323,7 @@ export interface FileRouteTypes {
     | '/sops'
     | '/vault'
     | '/api/chat'
+    | '/api/health'
     | '/auth/callback'
     | '/committee/$reviewId'
     | '/committee/calibration'
@@ -345,6 +355,7 @@ export interface FileRouteTypes {
     | '/sops'
     | '/vault'
     | '/api/chat'
+    | '/api/health'
     | '/auth/callback'
     | '/committee/$reviewId'
     | '/committee/calibration'
@@ -376,6 +387,7 @@ export interface FileRouteTypes {
     | '/_authenticated/sops'
     | '/_authenticated/vault'
     | '/api/chat'
+    | '/api/health'
     | '/auth/callback'
     | '/_authenticated/committee/$reviewId'
     | '/_authenticated/committee/calibration'
@@ -396,6 +408,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
   ApiChatRoute: typeof ApiChatRoute
+  ApiHealthRoute: typeof ApiHealthRoute
   ApiVoiceSttRoute: typeof ApiVoiceSttRoute
   ApiVoiceTtsRoute: typeof ApiVoiceTtsRoute
   ApiPublicHooksKatanaRunnerRoute: typeof ApiPublicHooksKatanaRunnerRoute
@@ -431,6 +444,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/callback'
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof AuthRoute
+    }
+    '/api/health': {
+      id: '/api/health'
+      path: '/api/health'
+      fullPath: '/api/health'
+      preLoaderRoute: typeof ApiHealthRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/chat': {
       id: '/api/chat'
@@ -729,6 +749,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
   ApiChatRoute: ApiChatRoute,
+  ApiHealthRoute: ApiHealthRoute,
   ApiVoiceSttRoute: ApiVoiceSttRoute,
   ApiVoiceTtsRoute: ApiVoiceTtsRoute,
   ApiPublicHooksKatanaRunnerRoute: ApiPublicHooksKatanaRunnerRoute,

@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import { MosShell } from "@/components/mos-shell";
+import { RouteError } from "@/components/route-error";
 import { useIsAdmin } from "@/hooks/use-is-admin";
 import { createReview, listReviews, runDeliberation } from "@/lib/committee.functions";
 import { Users, Gavel, Send, Lock, AlertTriangle, CheckCircle2, Beaker, HelpCircle, XCircle } from "lucide-react";
@@ -10,6 +11,7 @@ import { formatDistanceToNow } from "date-fns";
 
 export const Route = createFileRoute("/_authenticated/committee")({
   component: CommitteePage,
+  errorComponent: RouteError,
 });
 
 const DECISION_META: Record<string, { label: string; className: string; icon: typeof CheckCircle2 }> = {

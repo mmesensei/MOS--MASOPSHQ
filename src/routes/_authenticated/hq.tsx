@@ -3,12 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { MosShell } from "@/components/mos-shell";
 import { EXECUTIVE_LIST } from "@/lib/executives";
-import { ExecutivePresence } from "@/components/executive-presence";
+import { ExecutiveAvatar } from "@/components/executive-avatar";
 import { getProfile, listCouncilSessions } from "@/lib/mos.functions";
 import { listMissionsV2, listJournal, seedSopsIfEmpty } from "@/lib/mos-v2.functions";
 import { ExecutiveBriefingFeed, useAwarenessScan } from "@/components/executive-briefing";
 import { Boardroom } from "@/components/boardroom";
 import { BoardroomVoiceConsole } from "@/components/boardroom-voice-console";
+import { SectionBoundary } from "@/components/section-boundary";
 import { TranscriptPanel } from "@/components/transcript-panel";
 import { FoundingVipBanner } from "@/components/founding-vip-banner";
 import { ExecChamber } from "@/components/exec-chamber";
@@ -91,13 +92,15 @@ function HQ() {
         </header>
 
         {/* ── Living Boardroom — R3F stage reacting to presence bus ───────── */}
-        <section className="mb-4" aria-label="Executive Boardroom">
-          <Boardroom />
-        </section>
-        <section className="mb-10 grid gap-4 md:grid-cols-2" aria-label="Boardroom controls">
-          <BoardroomVoiceConsole />
-          <TranscriptPanel />
-        </section>
+        <SectionBoundary label="Executive Boardroom">
+          <section className="mb-4" aria-label="Executive Boardroom">
+            <Boardroom />
+          </section>
+          <section className="mb-10 grid gap-4 md:grid-cols-2" aria-label="Boardroom controls">
+            <BoardroomVoiceConsole />
+            <TranscriptPanel />
+          </section>
+        </SectionBoundary>
 
         {/* ── Executive Command Area ──────────────────────────────────────── */}
         <section aria-label="Executive Command">
@@ -266,10 +269,11 @@ function HQ() {
                 };
                 return (
                   <div key={j.id} className="flex items-start gap-3 p-3">
-                    <ExecutivePresence
+                    <ExecutiveAvatar
                       executive={j.executive as never}
                       state="idle"
-                      size="chip"
+                      mode="portrait"
+                      portraitSize="chip"
                     />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">

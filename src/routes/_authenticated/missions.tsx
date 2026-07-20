@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import { MosShell } from "@/components/mos-shell";
+import { RouteError } from "@/components/route-error";
 import { listMissionsV2, advanceMissionStage } from "@/lib/mos-v2.functions";
 import { createReview, runDeliberation } from "@/lib/committee.functions";
 import { useIsAdmin } from "@/hooks/use-is-admin";
@@ -12,6 +13,7 @@ import { formatDistanceToNow } from "date-fns";
 
 export const Route = createFileRoute("/_authenticated/missions")({
   component: MissionsPage,
+  errorComponent: RouteError,
 });
 
 const STAGES = ["proposed", "chartered", "active", "in_review", "completed", "held", "archived"] as const;

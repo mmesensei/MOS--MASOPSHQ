@@ -1,24 +1,37 @@
 // Executive Avatar Framework — per-executive configuration registry.
 //
-// Add or update an executive by editing its config entry. Swap 2D → 3D by
-// setting `modelUrl` to the GLB path — no component changes required.
+// Add or update an executive by editing its config entry. Swap renderers by
+// setting the relevant asset field — no component changes required:
+//   • modelUrl     → activates "3d" mode (GLB/GLTF)
+//   • liveAssets   → activates "live" mode (video clips)
+//   • portrait JPGs always present → "portrait" mode always available
 //
-// Asset drop-in workflow (FD-003B):
-//   /public/assets/executives/<id>/<id>.glb          ← base model
-//   /public/assets/executives/<id>/idle.glb          ← auxiliary clip
-//   /public/assets/executives/<id>/speak.glb         ← auxiliary clip
-//   ...
-// The framework resolves URLs via `resolveClipUrl(config, name)`, so a new
-// clip only needs a matching entry in `animations` to become playable.
+// ─────────────────────────────────────────────────────────────────────────────
+// ASSET AUDIT (as of 2026-07-19)
+// ─────────────────────────────────────────────────────────────────────────────
+// PRESENT:
+//   ✓  Portrait JPGs      src/assets/exec-*-portrait-v2.jpg
+//   ✓  Portrait JPGs (v1) src/assets/exec-*-portrait.jpg
+//   ✓  PNG exec images    src/assets/exec-*.png
+//   ✓  HQ background JPGs src/assets/hq-*.jpg
+//
+// ABSENT (awaiting assets):
+//   ✗  GLB/GLTF models    /public/assets/executives/<id>/<id>.glb
+//   ✗  Live video clips   /public/assets/executives/<id>/live/*.webm
+//
+// Auto mode resolves to "portrait" for all executives until assets are supplied.
+// ─────────────────────────────────────────────────────────────────────────────
 import type { ExecutiveId } from "@/lib/executives";
-import type { ExecutiveAvatarConfig } from "./types";
+import type { ExecutiveAvatarConfig, LiveAssets, PresentationConfig } from "./types";
 
 const ASSET_ROOT = "/assets/executives";
 
 function buildConfig(
   id: ExecutiveId,
-  overrides: Omit<ExecutiveAvatarConfig, "executive" | "assetRoot" | "modelUrl"> & {
+  overrides: Omit<ExecutiveAvatarConfig, "executive" | "assetRoot" | "modelUrl" | "liveAssets"> & {
     modelUrl?: string | null;
+    liveAssets?: LiveAssets | null;
+    presentation?: PresentationConfig;
   },
 ): ExecutiveAvatarConfig {
   const assetRoot = `${ASSET_ROOT}/${id}`;
@@ -26,13 +39,16 @@ function buildConfig(
     executive: id,
     assetRoot,
     modelUrl: overrides.modelUrl ?? null,
+    liveAssets: overrides.liveAssets ?? null,
+    presentation: overrides.presentation,
     ...overrides,
   };
 }
 
 export const EXECUTIVE_AVATAR_CONFIGS: Record<ExecutiveId, ExecutiveAvatarConfig> = {
   iris: buildConfig("iris", {
-    modelUrl: null, // Drop: /public/assets/executives/iris/iris.glb
+    modelUrl:   null, // awaiting asset: /public/assets/executives/iris/iris.glb
+    liveAssets: null, // awaiting asset: /public/assets/executives/iris/live/
     previewUrl: null,
     animations: {
       idle: "Idle",
@@ -44,6 +60,14 @@ export const EXECUTIVE_AVATAR_CONFIGS: Record<ExecutiveId, ExecutiveAvatarConfig
       working: "Work",
       celebrating: "Celebrate",
       offline: "Offline",
+    },
+    presentation: {
+      portraitObjectPosition: "center top",
+      overlayCalibration: {
+        // Eyes approx 28% from top on v2 portrait crop — matches current blink veil default
+        eyes:  { top: "28%", left: "8%", width: "84%" },
+        mouth: { top: "34%", left: "35%", width: "30%" },
+      },
     },
     voice: { voiceId: "iris" },
     camera: "portrait",
@@ -70,8 +94,10 @@ export const EXECUTIVE_AVATAR_CONFIGS: Record<ExecutiveId, ExecutiveAvatarConfig
       waypoints: { boardroom: [-1.2, 0, -0.4], podium: [0, 0, -1.2] },
     },
   }),
+
   apex: buildConfig("apex", {
-    modelUrl: null,
+    modelUrl:   null, // awaiting asset: /public/assets/executives/apex/apex.glb
+    liveAssets: null, // awaiting asset: /public/assets/executives/apex/live/
     previewUrl: null,
     animations: {
       idle: "Idle",
@@ -81,6 +107,13 @@ export const EXECUTIVE_AVATAR_CONFIGS: Record<ExecutiveId, ExecutiveAvatarConfig
       working: "Design",
       greeting: "Greet",
       offline: "Offline",
+    },
+    presentation: {
+      portraitObjectPosition: "center top",
+      overlayCalibration: {
+        eyes:  { top: "28%", left: "8%", width: "84%" },
+        mouth: { top: "34%", left: "35%", width: "30%" },
+      },
     },
     voice: { voiceId: "apex" },
     camera: "bust",
@@ -106,8 +139,10 @@ export const EXECUTIVE_AVATAR_CONFIGS: Record<ExecutiveId, ExecutiveAvatarConfig
       waypoints: { boardroom: [-0.4, 0, -0.4] },
     },
   }),
+
   katana: buildConfig("katana", {
-    modelUrl: null,
+    modelUrl:   null, // awaiting asset: /public/assets/executives/katana/katana.glb
+    liveAssets: null, // awaiting asset: /public/assets/executives/katana/live/
     previewUrl: null,
     animations: {
       idle: "Idle",
@@ -118,6 +153,13 @@ export const EXECUTIVE_AVATAR_CONFIGS: Record<ExecutiveId, ExecutiveAvatarConfig
       warning: "Alert",
       greeting: "Greet",
       offline: "Offline",
+    },
+    presentation: {
+      portraitObjectPosition: "center top",
+      overlayCalibration: {
+        eyes:  { top: "28%", left: "8%", width: "84%" },
+        mouth: { top: "34%", left: "35%", width: "30%" },
+      },
     },
     voice: { voiceId: "katana" },
     camera: "bust",
@@ -143,8 +185,10 @@ export const EXECUTIVE_AVATAR_CONFIGS: Record<ExecutiveId, ExecutiveAvatarConfig
       waypoints: { boardroom: [0.4, 0, -0.4] },
     },
   }),
+
   sentinel: buildConfig("sentinel", {
-    modelUrl: null,
+    modelUrl:   null, // awaiting asset: /public/assets/executives/sentinel/sentinel.glb
+    liveAssets: null, // awaiting asset: /public/assets/executives/sentinel/live/
     previewUrl: null,
     animations: {
       idle: "Idle",
@@ -154,6 +198,14 @@ export const EXECUTIVE_AVATAR_CONFIGS: Record<ExecutiveId, ExecutiveAvatarConfig
       working: "Monitor",
       greeting: "Greet",
       offline: "Offline",
+    },
+    presentation: {
+      portraitObjectPosition: "center top",
+      overlayCalibration: {
+        // Sentinel has an illuminated visor — disable mouth overlay, keep blink
+        eyes:  { top: "28%", left: "8%", width: "84%" },
+        mouth: null, // visor obscures mouth; overlay not meaningful
+      },
     },
     voice: { voiceId: "sentinel" },
     camera: "portrait",

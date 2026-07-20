@@ -1,9 +1,9 @@
 import { createFileRoute, Link, useNavigate, useParams, notFound } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { lazy, Suspense } from "react";
 import { MosShell } from "@/components/mos-shell";
-import { ExecutivePresence } from "@/components/executive-presence";
+import { RouteError } from "@/components/route-error";
+import { ExecutiveAvatar } from "@/components/executive-avatar";
 import { useAwarenessScan } from "@/components/executive-briefing";
 
 import { EXECUTIVES, type ExecutiveId } from "@/lib/executives";
@@ -11,11 +11,9 @@ import { createThread, deleteThread, listThreads } from "@/lib/mos.functions";
 import { Plus, Trash2, ArrowRight } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
-// R3F is browser-only; lazy-load so the office route stays SSR-safe.
-const ExecutiveLivingScene = lazy(() => import("@/components/executive-living-scene"));
-
 export const Route = createFileRoute("/_authenticated/office/$exec/")({
   component: Office,
+  errorComponent: RouteError,
 });
 
 function isExec(v: string): v is ExecutiveId {
@@ -54,13 +52,14 @@ function Office() {
     <MosShell>
       <div className="mx-auto max-w-6xl px-6 py-8">
         <div className="grid gap-8 md:grid-cols-[minmax(0,340px)_1fr]">
-          {/* Presence column */}
+          {/* Presence column — routed through unified ExecutiveAvatar entry point */}
           <div>
-            <Suspense
-              fallback={<ExecutivePresence executive={exec} state="listening" size="full" />}
-            >
-              <ExecutiveLivingScene executive={exec} />
-            </Suspense>
+            <ExecutiveAvatar
+              executive={exec}
+              state="listening"
+              mode="portrait"
+              portraitSize="full"
+            />
             <div className="mt-4">
               <div className={`text-[10px] font-mono uppercase tracking-[0.3em] ${e.colorClass}`}>{e.signature}</div>
               <h1 className="mt-1 font-display text-3xl font-semibold tracking-tight">{e.name}</h1>

@@ -1,0 +1,4 @@
+- [Lovable vite config port/host](lovable-vite-config.md) — forces IPv6+8080 in sandbox; non-sandbox lets vite.config.ts win, so override with 0.0.0.0:5000 for Replit webview.
+- [Lovable OAuth broker on Replit](lovable-oauth-broker.md) — /~oauth/initiate returns 404 on Replit; use supabase.auth.signInWithOAuth directly; app uses Supabase project vssftkkpprxxyrgmuzxt (Mosv1), not the Lovable-managed original.
+- [OAuth callback route pattern](auth-oauth-callback.md) — never redirect OAuth directly to a protected route; use /auth/callback to avoid beforeLoad race condition.
+- [Korean i18n system](i18n-korean.md) — LanguageProvider + useT() for static strings; TranslateButton for AI-powered dynamic content; requires LOVABLE_API_KEY.
