@@ -59,14 +59,16 @@ type ResolvedMode = "placeholder" | "portrait" | "3d" | "live";
 
 function resolveMode(config: ExecutiveAvatarConfig, explicit: AvatarMode): ResolvedMode {
   if (explicit !== "auto") return explicit as ResolvedMode;
-  // Auto-detection chain: live → 3d → portrait → placeholder
+  // Auto-detection chain: live → 3d → placeholder.
+  // Callers that want portrait must pass mode="portrait" explicitly — this
+  // preserves backward compatibility for existing callers that rely on the
+  // compact placeholder being returned when no 3D assets are present.
   const hasLiveAssets =
     config.liveAssets != null &&
     Object.values(config.liveAssets).some((v) => typeof v === "string" && v.length > 0);
   if (hasLiveAssets) return "live";
   if (config.modelUrl) return "3d";
-  // Portrait assets always exist → default to portrait (richer than placeholder)
-  return "portrait";
+  return "placeholder";
 }
 
 // ── Generic error boundary ────────────────────────────────────────────────────

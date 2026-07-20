@@ -116,7 +116,7 @@ function Landing() {
         {EXECUTIVE_LIST.map((e) => (
           <div key={e.id} className="hq-panel p-6 transition hover:-translate-y-0.5">
             <div className="flex items-start justify-between">
-              <ExecutiveAvatar executive={e.id} state={AVATAR_STATES[e.id]} size={64} />
+              <ExecutiveAvatar executive={e.id} state={AVATAR_STATES[e.id]} mode="portrait" portraitSize="chip" />
               <div className="text-[10px] font-mono uppercase tracking-[0.25em] text-muted-foreground">
                 On duty
               </div>
